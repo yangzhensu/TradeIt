@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Trade It</string>
+    <string name="web_api_key">AIzaSyDMm0of1d3zvi0YmkkeZuOFgJPgtQMp0bQ</string>
+    <string name="signed_in_fmt">Signed in as: %s</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="disconnect">Disconnect</string>
+</resources>

@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "670035138234",
+    "firebase_url": "https://trade-your-way.firebaseio.com",
+    "project_id": "trade-your-way",
+    "storage_bucket": "trade-your-way.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:670035138234:android:c9314857de68d64a",
+        "android_client_info": {
+          "package_name": "steve.yang.tradeit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "670035138234-saqm1krqehfbvp80mjc67liupnaf2fsr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "steve.yang.tradeit",
+            "certificate_hash": "4cc54e4a7663bbe1bc8ff84ed6056060e12a4330"
+          }
+        },
+        {
+          "client_id": "670035138234-n30uj5t6v197v0qcmaplcjb33fufqaop.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA39ddH7VnRPjZ_ebGPnTERQtpBAgEJgCE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "670035138234-n30uj5t6v197v0qcmaplcjb33fufqaop.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "670035138234-cv10q64la141hsnlok7kdm636luuqgil.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "michael.guo.TradeIt"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
