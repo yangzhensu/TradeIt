@@ -40,15 +40,15 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "670035138234-n30uj5t6v197v0qcmaplcjb33fufqaop.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
               "client_id": "670035138234-cv10q64la141hsnlok7kdm636luuqgil.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "michael.guo.TradeIt"
               }
+            },
+            {
+              "client_id": "670035138234-n30uj5t6v197v0qcmaplcjb33fufqaop.apps.googleusercontent.com",
+              "client_type": 3
             }
           ]
         },

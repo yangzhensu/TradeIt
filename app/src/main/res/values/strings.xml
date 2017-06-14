@@ -1,4 +1,5 @@
 <resources>
+    <string name="server_client_id">670035138234-n30uj5t6v197v0qcmaplcjb33fufqaop.apps.googleusercontent.com</string>
     <string name="app_name">Trade It</string>
     <string name="web_api_key">AIzaSyDMm0of1d3zvi0YmkkeZuOFgJPgtQMp0bQ</string>
     <string name="signed_in_fmt">Signed in as: %s</string>
