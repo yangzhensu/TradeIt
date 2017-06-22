@@ -15,8 +15,12 @@ public interface IDbHelper {
 
     void removeSale(Sale sale);
 
+    void updateSale(Sale sale);
+
     void addUser(User user);
 
     void removeUser(User user);
+
+    void updateUser(User user);
 
 }

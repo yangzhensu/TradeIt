@@ -29,7 +29,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import steve.yang.tradeit.R;
-import steve.yang.tradeit.data.User;
+import steve.yang.tradeit.TradeIt;
 import steve.yang.tradeit.util.DbHelper;
 
 /**
@@ -56,7 +56,7 @@ public class SignInActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_signin);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
@@ -159,12 +159,25 @@ public class SignInActivity extends AppCompatActivity implements
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             GoogleSignInAccount account = result.getSignInAccount();
+            TradeIt.setAccount(account);
             firebaseAuthWithGoogle(account);
             statusTextView.setText(getString(R.string.signed_in_fmt, account.getDisplayName()));
             updateUI(true);
+//            startHomeActivity();
+//            startPostActivity();
         } else {
             updateUI(false);
         }
+    }
+
+    private void startHomeActivity() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+    }
+
+    private void startPostActivity() {
+        Intent intent = new Intent(this, PostActivity.class);
+        startActivity(intent);
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
@@ -176,8 +189,16 @@ public class SignInActivity extends AppCompatActivity implements
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Log.d(TAG, "signInWithCredential:sucess");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            Log.d(TAG, "signInWithCredential:success");
+                            FirebaseUser currentUser = mAuth.getCurrentUser();
+                            TradeIt.setUid(currentUser. getUid());
+                            DbHelper dbHelper = DbHelper.getInstance();
+                            dbHelper.fetchInfo();
+
+                            if (DbHelper.snapshot == null) {
+                                Log.w(TAG, "DataSnapshot is null!");
+                            }
+                            startPostActivity();
                         } else {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(SignInActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();

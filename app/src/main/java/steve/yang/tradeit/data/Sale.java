@@ -1,6 +1,8 @@
 package steve.yang.tradeit.data;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author zhensuy
@@ -10,22 +12,75 @@ import java.util.Date;
 
 public class Sale {
 
+    private String mainImageUrl;
+    private String price;
+    private String status;
+    private String timestamp;
     private String title;
-    private Date timestamp;
-    private int price;
-    private int viewCount;
-    private SaleDetail detail;
+    private String uid;
+    private String viewCount;
+    private String details;
+    private String tags;
+    private String zipCode;
 
-    public enum Status {
-        sale, sold
+    private String salesId;
+
+    public Sale() {
+        this.mainImageUrl = "";
+        this.price = "";
+        this.status = "";
+        this.timestamp = "";
+        this.title = "";
+        this.uid = "";
+        this.viewCount = "";
+        this.details = "";
+        this.tags = "";
+        this.zipCode = "";
     }
 
-    public Sale(String title, Date timestamp, int price, int viewCount, SaleDetail detail) {
-        this.title = title;
-        this.timestamp = timestamp;
+    public Sale(String mainImageUrl, String price, String status, String timestamp, String title, String uid, String viewCount, String details, String tags, String zipCode) {
+        this.mainImageUrl = mainImageUrl;
         this.price = price;
+        this.status = status;
+        this.timestamp = timestamp;
+        this.title = title;
+        this.uid = uid;
         this.viewCount = viewCount;
-        this.detail = detail;
+        this.details = details;
+        this.tags = tags;
+        this.zipCode = zipCode;
+    }
+
+    public String getMainImageUrl() {
+        return mainImageUrl;
+    }
+
+    public void setMainImageUrl(String mainImageUrl) {
+        this.mainImageUrl = mainImageUrl;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getTitle() {
@@ -36,35 +91,65 @@ public class Sale {
         this.title = title;
     }
 
-    public Date getTimestamp() {
-        return timestamp;
+    public String getUid() {
+        return uid;
     }
 
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public int getViewCount() {
+    public String getViewCount() {
         return viewCount;
     }
 
-    public void setViewCount(int viewCount) {
+    public void setViewCount(String viewCount) {
         this.viewCount = viewCount;
     }
 
-    public SaleDetail getDetail() {
-        return detail;
+    public String getSalesId() {
+        return salesId;
     }
 
-    public void setDetail(SaleDetail detail) {
-        this.detail = detail;
+    public void setSalesId(String salesId) {
+        this.salesId = salesId;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public Map<String, String> toMap() {
+        HashMap<String, String> result = new HashMap<>();
+        result.put("mainImageUrl", mainImageUrl);
+        result.put("price", price);
+        result.put("status", status);
+        result.put("timestamp", timestamp);
+        result.put("title", title);
+        result.put("uid", uid);
+        result.put("viewCount", viewCount);
+//        result.put("sale");
+
+        return result;
     }
 }

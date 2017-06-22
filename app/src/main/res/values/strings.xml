@@ -1,8 +1,21 @@
 <resources>
+
+    <!-- SignIn Activity -->
     <string name="server_client_id">670035138234-n30uj5t6v197v0qcmaplcjb33fufqaop.apps.googleusercontent.com</string>
     <string name="app_name">Trade It</string>
     <string name="web_api_key">AIzaSyDMm0of1d3zvi0YmkkeZuOFgJPgtQMp0bQ</string>
     <string name="signed_in_fmt">Signed in as: %s</string>
     <string name="sign_out">Sign Out</string>
     <string name="disconnect">Disconnect</string>
+
+    <!-- Post Activity-->
+    <string name="post_title_view">Title</string>
+    <string name="post_title_hint">This is title.</string>
+    <string name="post_tags_view">Tags (format: separate by commma)</string>
+    <string name="post_tags_hint">homemade, taste well, delicious</string>
+    <string name="post_price_view">Price</string>
+    <string name="post_price_hint">123</string>
+    <string name="post_choose_view">Choose</string>
+    <string name="post_detail_view">Detail</string>
+    <string name="post_detail_hint">This is the detail text view.</string>
 </resources>

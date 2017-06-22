@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context="steve.yang.tradeit.ui.PostActivity">
+
+
+            <TextView
+                android:id="@+id/post_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/post_title_view"/>
+
+            <EditText
+                android:id="@+id/post_title_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/post_title_hint"/>
+
+            <TextView
+                android:id="@+id/post_Tags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/post_tags_view" />
+
+            <EditText
+                android:id="@+id/post_tags_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/post_tags_hint"/>
+
+            <TextView
+                android:id="@+id/post_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/post_price_view" />
+
+            <EditText
+                android:id="@+id/post_price_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/post_price_hint" />
+
+            <TextView
+                android:id="@+id/post_choose"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/post_choose_view"/>
+
+            <GridView
+                android:id="@+id/selected_images"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnWidth="90dp"
+                android:gravity="center"
+                android:horizontalSpacing="10dp"
+                android:numColumns="auto_fit"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="10dp" />
+
+            <TextView
+                android:id="@+id/post_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/post_detail_view"/>
+
+            <EditText
+                android:id="@+id/post_detail_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/post_detail_hint" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/post_btn_back"
+                android:layout_width="180dp"
+                android:layout_height="60dp"
+                android:text="Back"
+                android:textSize="30dp"/>
+            <Button
+                android:id="@+id/post_btn_confirm"
+                android:layout_width="180dp"
+                android:layout_height="60dp"
+                android:text="Confirm"
+                android:textSize="30dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
