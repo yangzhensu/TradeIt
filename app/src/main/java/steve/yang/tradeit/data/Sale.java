@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import steve.yang.tradeit.TradeIt;
+
 /**
  * @author zhensuy
  * @date 6/13/17
@@ -31,8 +33,8 @@ public class Sale {
         this.status = "";
         this.timestamp = "";
         this.title = "";
-        this.uid = "";
-        this.viewCount = "";
+        this.uid = TradeIt.getUid();
+        this.viewCount = "0";
         this.details = "";
         this.tags = "";
         this.zipCode = "";
@@ -141,6 +143,7 @@ public class Sale {
 
     public Map<String, String> toMap() {
         HashMap<String, String> result = new HashMap<>();
+
         result.put("mainImageUrl", mainImageUrl);
         result.put("price", price);
         result.put("status", status);
@@ -148,7 +151,8 @@ public class Sale {
         result.put("title", title);
         result.put("uid", uid);
         result.put("viewCount", viewCount);
-//        result.put("sale");
+        result.put("details", details);
+        result.put("tags", tags);
 
         return result;
     }

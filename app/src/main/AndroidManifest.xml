@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="steve.yang.tradeit">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,8 +20,8 @@
         </activity>
         <activity android:name=".ui.HomeActivity" />
         <activity android:name=".ui.PostActivity" />
-        <activity android:name=".ui.ReviewActivity"></activity>
+        <activity android:name=".ui.ReviewActivity" />
+        <activity android:name=".ui.MyActivity"></activity>
     </application>
 
 </manifest>
-

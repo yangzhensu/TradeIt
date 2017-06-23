@@ -31,6 +31,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import steve.yang.tradeit.R;
 import steve.yang.tradeit.TradeIt;
 import steve.yang.tradeit.util.DbHelper;
+import steve.yang.tradeit.util.NetworkHelper;
 
 /**
  * @author zhensuy
@@ -163,8 +164,6 @@ public class SignInActivity extends AppCompatActivity implements
             firebaseAuthWithGoogle(account);
             statusTextView.setText(getString(R.string.signed_in_fmt, account.getDisplayName()));
             updateUI(true);
-//            startHomeActivity();
-//            startPostActivity();
         } else {
             updateUI(false);
         }
@@ -192,13 +191,15 @@ public class SignInActivity extends AppCompatActivity implements
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser currentUser = mAuth.getCurrentUser();
                             TradeIt.setUid(currentUser. getUid());
-                            DbHelper dbHelper = DbHelper.getInstance();
-                            dbHelper.fetchInfo();
+//                            DbHelper dbHelper = DbHelper.getInstance();
+//                            dbHelper.fetchInfo();
 
                             if (DbHelper.snapshot == null) {
                                 Log.w(TAG, "DataSnapshot is null!");
                             }
-                            startPostActivity();
+                            fetchUserData();
+                            startHomeActivity();
+//                            startPostActivity();
                         } else {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(SignInActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
@@ -206,6 +207,12 @@ public class SignInActivity extends AppCompatActivity implements
                     }
                 });
 
+    }
+
+    private void fetchUserData() {
+        DbHelper helper = DbHelper.getInstance();
+        helper.setContext(this);
+        helper.fetchInfo();
     }
 
     private void updateUI(boolean signedIn) {

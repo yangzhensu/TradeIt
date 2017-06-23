@@ -1,5 +1,7 @@
 <resources>
 
+    <string name="zipcode_api_key">aAX985Yt7ZXdPYQLPKcSSe8m2GGpx2VHDTQMYOf6NdjDbao1UBTNQ19SHQheTdVw</string>
+
     <!-- SignIn Activity -->
     <string name="server_client_id">670035138234-n30uj5t6v197v0qcmaplcjb33fufqaop.apps.googleusercontent.com</string>
     <string name="app_name">Trade It</string>
@@ -18,4 +20,5 @@
     <string name="post_choose_view">Choose</string>
     <string name="post_detail_view">Detail</string>
     <string name="post_detail_hint">This is the detail text view.</string>
+
 </resources>

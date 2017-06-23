@@ -3,11 +3,11 @@ package steve.yang.tradeit;
 import android.app.Application;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import steve.yang.tradeit.data.Sale;
 import steve.yang.tradeit.data.User;
 
 /**
@@ -21,7 +21,7 @@ public class TradeIt extends Application {
     private static User user;
     private static GoogleSignInAccount account;
     private static String uid;
-    private static List<String> salesId;
+    private static List<Sale> sales;
 
     public static User getUser() {
         return user;
@@ -47,15 +47,15 @@ public class TradeIt extends Application {
         TradeIt.uid = uid;
     }
 
-    public static List<String> getSalesId() {
-        if (salesId == null) {
-            salesId = new ArrayList<>();
+    public static List<Sale> getSales() {
+        if (sales == null) {
+            sales = new ArrayList<>();
         }
-        return salesId;
+        return sales;
     }
 
-    public static void setSalesId(List<String> salesId) {
-        TradeIt.salesId = salesId;
+    public static void setSales(List<Sale> sales) {
+        TradeIt.sales = sales;
     }
 
     @Override

@@ -20,6 +20,14 @@ allprojects {
     }
 }
 
+ext {
+
+    // dependency versions
+    supportLibraryVersion = '25.3.1'
+    firebaseLibraryVersion = '11.0.0'
+    imagePickerVersion = '1.7.2'
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }

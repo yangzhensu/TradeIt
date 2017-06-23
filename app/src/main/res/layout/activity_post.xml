@@ -19,7 +19,8 @@
                 android:id="@+id/post_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/post_title_view"/>
+                android:text="@string/post_title_view"
+                android:textSize="@dimen/post_text_view_text_size"/>
 
             <EditText
                 android:id="@+id/post_title_edit"

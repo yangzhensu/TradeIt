@@ -1,5 +1,7 @@
 package steve.yang.tradeit.util;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -18,6 +20,7 @@ import steve.yang.tradeit.TradeIt;
 import steve.yang.tradeit.data.Sale;
 import steve.yang.tradeit.data.User;
 import steve.yang.tradeit.interfaces.IDbHelper;
+import steve.yang.tradeit.ui.HomeActivity;
 
 /**
  * @author zhensuy
@@ -31,12 +34,14 @@ public class DbHelper implements IDbHelper {
     public static final String DATABASE_URL = "https://trade-your-way.firebaseio.com/";
     public static DatabaseReference mDb;
     private static User currentUser;
-    private List<Sale> sales;
     public static DataSnapshot snapshot;
     private static DbHelper dbHelper;
+    private Context mContext;
+    private int count;
 
     private DbHelper() {
         mDb = FirebaseDatabase.getInstance().getReference();
+        count = 0;
     }
 
     public static DbHelper getInstance() {
@@ -44,6 +49,10 @@ public class DbHelper implements IDbHelper {
             dbHelper = new DbHelper();
         }
         return dbHelper;
+    }
+
+    public void setContext(Context context) {
+        mContext = context;
     }
 
     private void getSales() {
@@ -68,7 +77,7 @@ public class DbHelper implements IDbHelper {
 
     public void fetchInfo() {
         DatabaseReference userRef = mDb.child("users").child(TradeIt.getUid());
-        DatabaseReference salesRef = userRef.child("sales");
+        final DatabaseReference salesRef = mDb.child("sales");
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -79,24 +88,28 @@ public class DbHelper implements IDbHelper {
                     updateUser(currentUser);
                 }
                 TradeIt.setUser(currentUser);
-                Log.d(TAG, "currentUser:" + currentUser.getUserName());
-            }
+                final Map<String, Object> saleIds = currentUser.getSales();
+                Log.d(TAG, "currentUser:" + currentUser.getUserName() + ", sale number: " + saleIds.keySet().size());
+                for (String saleId : saleIds.keySet()) {
+                    DatabaseReference saleRef = salesRef.child(saleId);
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                    saleRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Sale sale = dataSnapshot.getValue(Sale.class);
+                            TradeIt.getSales().add(sale);
+                            if (++count >= saleIds.keySet().size()) {
+                                startHomeActivity();
+                            }
+                        }
 
-            }
-        });
-        salesRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                List<String> salesIds = TradeIt.getSalesId();
-                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-                for (DataSnapshot child : children) {
-                    String saleId = child.getKey();
-                    Log.d(TAG, "saleId:" + saleId);
-                    salesIds.add(saleId);
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 }
+//                startHomeActivity();
             }
 
             @Override
@@ -104,6 +117,23 @@ public class DbHelper implements IDbHelper {
 
             }
         });
+//        salesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                List<String> salesIds = TradeIt.getSales();
+//                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+//                for (DataSnapshot child : children) {
+//                    String saleId = child.getKey();
+//                    Log.d(TAG, "saleId:" + saleId);
+//                    salesIds.add(saleId);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
     }
 
     public void addSale(Sale sale) {
@@ -207,6 +237,11 @@ public class DbHelper implements IDbHelper {
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/zipCodes/" + sale.getZipCode() + "/" + sale.getSalesId() + "/", postValues);
         mDb.updateChildren(childUpdates);
+    }
+
+    private void startHomeActivity() {
+        Intent intent = new Intent(mContext, HomeActivity.class);
+        mContext.startActivity(intent);
     }
 
 }
