@@ -20,5 +20,19 @@
     <string name="post_choose_view">Choose</string>
     <string name="post_detail_view">Detail</string>
     <string name="post_detail_hint">This is the detail text view.</string>
+    <string name="post_zipcode_view">Zipcode</string>
+    <string name="post_zipcode_hint">94086</string>
+
+    <!-- Profile Activity -->
+    <string name="profile_username">User Name</string>
+    <string name="profile_date_of_birth">Date of Birth</string>
+    <string name="profile_phone_number">Phone Number</string>
+    <string name="profile_zipcode">Zipcode</string>
+    <string name="profile_whatsup">Whats up</string>
+    <string name="profile_sales">Sales</string>
+    <string name="profile_watchings">Watchings</string>
+    <string name="profile_back_button_text">Back</string>
+    <string name="profile_edit_button_text">Edit</string>
+    <string name="profile_confirm_button_text">Confirm</string>
 
 </resources>

@@ -19,7 +19,9 @@ import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.model.Image;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -50,6 +52,7 @@ public class PostActivity extends AppCompatActivity
     private TextView tvChoose;
     private TextView tvDetail;
     private EditText etDetail;
+    private EditText etZipcode;
     private GridView selectedImages;
     private Button btnBack;
     private Button btnConfirm;
@@ -80,6 +83,7 @@ public class PostActivity extends AppCompatActivity
         tvChoose = (TextView) findViewById(R.id.post_choose);
         tvDetail = (TextView) findViewById(R.id.post_detail);
         etDetail = (EditText) findViewById(R.id.post_detail_edit);
+        etZipcode = (EditText) findViewById(R.id.post_zipcode_edit);
         btnBack = (Button) findViewById(R.id.post_btn_back);
         btnConfirm = (Button) findViewById(R.id.post_btn_confirm);
 
@@ -103,6 +107,8 @@ public class PostActivity extends AppCompatActivity
         selectedImages = (GridView) findViewById(R.id.selected_images);
         selectedImages.setOnItemClickListener(this);
         selectedImages.setAdapter(mAdapter);
+
+        etZipcode.setText(TradeIt.getUser().getZipCode());
 
     }
 
@@ -182,12 +188,15 @@ public class PostActivity extends AppCompatActivity
     private void postItem() {
         Log.d(TAG, "postItem is executed");
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference imagesRef = storage.getReference().child("images").child(TradeIt.getUid());
-
-        for (int i = 1; i <= mAdapter.getCount(); i++) {
-            Image image = mAdapter.getItem(i - 1);
+        DatabaseReference salesRef = dbHelper.mDb.child("sales");
+        String salesId = salesRef.push().getKey();
+        newSale.setSalesId(salesId);
+        StorageReference imagesRef = storage.getReference().child("images").child(TradeIt.getUid()).child(salesId);
+        TradeIt.getSales().add(newSale);
+        for (int i = 0; i < mAdapter.getCount(); i++) {
+            Image image = mAdapter.getItem(i);
             Log.d(TAG, "imagePath: " + image.getPath());
-            UploadTask task = imagesRef.putFile(Uri.parse("file://" + image.getPath()));
+            UploadTask task = imagesRef.child("" + (i - 1) + ".jpg").putFile(Uri.parse("file://" + image.getPath()));
             task.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
@@ -203,8 +212,9 @@ public class PostActivity extends AppCompatActivity
                     }
                     Log.d(TAG, "download url: " + downloadUrl);
                     if (++uploadedImageCount == mAdapter.getCount() - 1) {
-                        Log.d(TAG, "Upload task successed.");
+                        Log.d(TAG, "Upload task succeeded.");
                         postToFirebase();
+                        finish();
                     }
                 }
             });
@@ -223,6 +233,7 @@ public class PostActivity extends AppCompatActivity
         newSale.setTimestamp(currentTime.toString());
         newSale.setDetails(etDetail.getText().toString());
         newSale.setTags(etTags.getText().toString());
+        newSale.setZipCode(etZipcode.getText().toString());
 
         dbHelper.addSale(newSale);
     }

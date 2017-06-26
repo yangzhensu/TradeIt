@@ -122,6 +122,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.tvPostTime.setText(sale.getTimestamp());
         holder.tvViewCount.setText(sale.getViewCount());
         holder.tvItemStaus.setText(sale.getStatus());
+        Log.d(TAG, "onBindViewHolder, url: " + sale.getMainImageUrl());
         Glide.with(mContext).load(sale.getMainImageUrl()).into(holder.ivMainImage);
     }
 

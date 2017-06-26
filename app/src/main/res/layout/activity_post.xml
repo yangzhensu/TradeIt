@@ -81,6 +81,18 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/post_detail_hint" />
 
+            <TextView
+                android:id="@+id/post_zipcode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/post_zipcode_view"/>
+
+            <EditText
+                android:id="@+id/post_zipcode_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/post_zipcode_hint" />
+
 
         </LinearLayout>
 

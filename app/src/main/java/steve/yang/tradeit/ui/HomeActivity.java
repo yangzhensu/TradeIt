@@ -12,17 +12,18 @@ import android.widget.Button;
 import steve.yang.tradeit.R;
 import steve.yang.tradeit.TradeIt;
 import steve.yang.tradeit.adapter.RecyclerViewAdapter;
-import steve.yang.tradeit.data.Sale;
 
 public class HomeActivity extends AppCompatActivity
         implements View.OnClickListener{
 
     public static final String TAG = HomeActivity.class.getSimpleName();
+    private final int START_POST_ACTIVITY = 101;
+    private final int START_PROFILE_ACTIVITY = 102;
+
     private RecyclerView mRecycleView;
     private Button btnPost;
     private Button btnHome;
     private Button btnMy;
-
 
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -44,6 +45,7 @@ public class HomeActivity extends AppCompatActivity
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 Log.d(TAG, "onScrollStateChanged, newState:" + newState);
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -74,7 +76,7 @@ public class HomeActivity extends AppCompatActivity
         if (v.getId() == R.id.home_button_post) {
             startPostActivity();
         } else if (v.getId() == R.id.home_button_my) {
-            startMyActivity();
+            startProfileActivity();
         } else {
             startSearch();
         }
@@ -82,12 +84,13 @@ public class HomeActivity extends AppCompatActivity
 
     private void startPostActivity() {
         Intent intent = new Intent(this, PostActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, START_POST_ACTIVITY);
+        mAdapter.notifyDataSetChanged();
     }
 
-    private void startMyActivity() {
-        Intent intent = new Intent(this, MyActivity.class);
-        startActivity(intent);
+    private void startProfileActivity() {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivityForResult(intent, START_PROFILE_ACTIVITY);
     }
 
     private void startSearch() {

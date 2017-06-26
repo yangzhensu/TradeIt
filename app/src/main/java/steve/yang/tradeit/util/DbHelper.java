@@ -89,7 +89,6 @@ public class DbHelper implements IDbHelper {
                 }
                 TradeIt.setUser(currentUser);
                 final Map<String, Object> saleIds = currentUser.getSales();
-                Log.d(TAG, "currentUser:" + currentUser.getUserName() + ", sale number: " + saleIds.keySet().size());
                 for (String saleId : saleIds.keySet()) {
                     DatabaseReference saleRef = salesRef.child(saleId);
 
@@ -137,11 +136,11 @@ public class DbHelper implements IDbHelper {
     }
 
     public void addSale(Sale sale) {
-        DatabaseReference salesRef = mDb.child("sales");
-        String salesId = salesRef.push().getKey();
-        Log.d(TAG, "salesId: " + salesId);
-        sale.setSalesId(salesId);
-        sale.setUid(TradeIt.getUid());
+//        DatabaseReference salesRef = mDb.child("sales");
+//        String salesId = salesRef.push().getKey();
+//        Log.d(TAG, "salesId: " + salesId);
+//        sale.setSalesId(salesId);
+//        sale.setUid(TradeIt.getUid());
 //        salesRef.setValue(sale);
 
         updateSale(sale);
