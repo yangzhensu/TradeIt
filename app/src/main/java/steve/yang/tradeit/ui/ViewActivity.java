@@ -27,7 +27,7 @@ public class ViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
 
-        Log.d(TAG, "onCreate, position" + getIntent().getIntExtra(HomeRecyclerViewAdapter.SALE_SELLER_POSITION, 0));
+        Log.d(TAG, "onCreate, position: " + getIntent().getIntExtra(HomeRecyclerViewAdapter.SALE_SELLER_POSITION, 0));
         mTitle = (TextView) findViewById(R.id.view_title);
         mPrice = (TextView) findViewById(R.id.view_price);
         mZipcode = (TextView) findViewById(R.id.view_zipcode);

@@ -30,14 +30,12 @@ import steve.yang.tradeit.ui.ViewActivity;
  * @description
  */
 
-public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerViewAdapter.ViewHolder> {
+public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerViewAdapter.ViewHolder>
+    implements View.OnClickListener{
 
     public static final String TAG = HomeRecyclerViewAdapter.class.getSimpleName();
 
     public static final String SALE_SELLER_POSITION = "sale_seller_position";
-
-    private List<Sale> mSaleList;
-    private List<User> mSellerList;
     private Map<Sale, User> mSaleUserMap;
     private List<SaleSeller> mSaleSellerList;
     private LayoutInflater mInflater;
@@ -67,6 +65,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         public ViewHolder (View v) {
             super(v);
             item = (CardView) v.findViewById(R.id.item_card);
+
             tvTitle = (TextView) v.findViewById(R.id.sale_item_title);
             ivMainImage = (ImageView) v.findViewById(R.id.sale_item_photo);
 
@@ -105,20 +104,12 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
     }
 
     public HomeRecyclerViewAdapter() {
-        mSaleList = new ArrayList<>();
-        mSellerList = new ArrayList<>();
         mSaleSellerList = new ArrayList<>();
     }
 
     public HomeRecyclerViewAdapter(Context context) {
         this();
         mContext = context;
-    }
-
-    public HomeRecyclerViewAdapter(List<Sale> mSaleList, List<User> mSellerList, Context context) {
-        this.mSaleList = mSaleList;
-        this.mSellerList = mSellerList;
-        this.mContext = context;
     }
 
     public HomeRecyclerViewAdapter(Map<Sale, User> saleUserMap, Context context) {
@@ -137,7 +128,6 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder, viewType: " + viewType);
         mInflater = LayoutInflater.from(parent.getContext());
         LinearLayout cardView = (LinearLayout) mInflater.inflate(R.layout.sale_card, parent, false);
         ViewHolder vh = new ViewHolder(cardView);
@@ -151,7 +141,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
         Sale sale = saleSeller.getSale();
         User seller = saleSeller.getSeller();
-
+        holder.item.setOnClickListener(this);
+        holder.item.setTag(saleSeller);
         holder.tvTitle.setText(sale.getTitle());
         holder.tvSellerName.setText(seller.getUserName());
         holder.tvPrice.setText(sale.getPrice());
@@ -169,4 +160,15 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         return mSaleSellerList.size();
     }
 
+    @Override
+    public void onClick(View v) {
+        SaleSeller saleSeller = (SaleSeller) v.getTag();
+        startViewActivity(saleSeller.getPosition());
+    }
+
+    private void startViewActivity(int position) {
+        Intent intent = new Intent(mContext, ViewActivity.class);
+        intent.putExtra(SALE_SELLER_POSITION, position);
+        mContext.startActivity(intent);
+    }
 }
