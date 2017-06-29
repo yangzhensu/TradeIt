@@ -1,7 +1,9 @@
 package steve.yang.tradeit.data;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import steve.yang.tradeit.TradeIt;
@@ -26,6 +28,7 @@ public class Sale {
     private String zipCode;
 
     private String salesId;
+    private List<String> imageUrls;
 
     public Sale() {
         this.mainImageUrl = "";
@@ -139,6 +142,17 @@ public class Sale {
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
+    }
+
+    public List<String> getImageUrls() {
+        if (imageUrls == null) {
+            imageUrls = new ArrayList<>();
+        }
+        return imageUrls;
+    }
+
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
     }
 
     public Map<String, String> toMap() {

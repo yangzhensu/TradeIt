@@ -9,9 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.List;
+
 import steve.yang.tradeit.R;
 import steve.yang.tradeit.TradeIt;
-import steve.yang.tradeit.adapter.RecyclerViewAdapter;
+import steve.yang.tradeit.adapter.HomeRecyclerViewAdapter;
+import steve.yang.tradeit.util.NetworkHelper;
 
 public class HomeActivity extends AppCompatActivity
         implements View.OnClickListener{
@@ -40,11 +43,20 @@ public class HomeActivity extends AppCompatActivity
         btnHome = (Button) findViewById(R.id.home_button_search);
         btnMy = (Button) findViewById(R.id.home_button_my);
 
-        mRecycleView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        final NetworkHelper networkHelper = new NetworkHelper(this);
+        networkHelper.setOnZipCodeResponseListener(new NetworkHelper.OnZipCodeResponseListener() {
+            @Override
+            public void onZipCodeResponse(List<String> response) {
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+
+        mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 Log.d(TAG, "onScrollStateChanged, newState:" + newState);
+                networkHelper.getZipCodeByDistance(TradeIt.getUser().getZipCode()); // TODO: get the data async
                 mAdapter.notifyDataSetChanged();
             }
 
@@ -67,8 +79,9 @@ public class HomeActivity extends AppCompatActivity
         mLayoutManager = new LinearLayoutManager(this);
         mRecycleView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new RecyclerViewAdapter(TradeIt.getSales(), this);
+        mAdapter = new HomeRecyclerViewAdapter(TradeIt.getSaleUserMap(), this);
         mRecycleView.setAdapter(mAdapter);
+
     }
 
     @Override

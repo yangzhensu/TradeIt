@@ -1,6 +1,7 @@
 <resources>
 
-    <string name="zipcode_api_key">aAX985Yt7ZXdPYQLPKcSSe8m2GGpx2VHDTQMYOf6NdjDbao1UBTNQ19SHQheTdVw</string>
+    <!--<string name="zipcode_api_key">aAX985Yt7ZXdPYQLPKcSSe8m2GGpx2VHDTQMYOf6NdjDbao1UBTNQ19SHQheTdVw</string>-->
+    <string name="zipcode_api_key">BdYzZgNmpJKzpyxGtWh4NFD6SJJjfbBQpzqpQdLfXvPm4m2xjkC70fdTYWce8N4y</string>
 
     <!-- SignIn Activity -->
     <string name="server_client_id">670035138234-n30uj5t6v197v0qcmaplcjb33fufqaop.apps.googleusercontent.com</string>

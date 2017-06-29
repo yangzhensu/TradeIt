@@ -28,9 +28,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.List;
+
 import steve.yang.tradeit.R;
 import steve.yang.tradeit.TradeIt;
-import steve.yang.tradeit.util.DbHelper;
+import steve.yang.tradeit.data.Sale;
+import steve.yang.tradeit.data.User;
+import steve.yang.tradeit.util.FirebaseDbHelper;
 import steve.yang.tradeit.util.NetworkHelper;
 
 /**
@@ -45,6 +49,7 @@ public class SignInActivity extends AppCompatActivity implements
 
     private static final String TAG = SignInActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 9001;
+    private final int MAX_SALES_DISPLAY_COUNT = 30;
 
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mAuth;
@@ -53,6 +58,10 @@ public class SignInActivity extends AppCompatActivity implements
     private Button signOutButton;
     private Button disconnectButton;
     private TextView statusTextView;
+    private FirebaseDbHelper mFirebaseDbHelper;
+    private NetworkHelper mNetworkHelper;
+
+    private int mZipCodeNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +86,49 @@ public class SignInActivity extends AppCompatActivity implements
         disconnectButton.setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
+        mFirebaseDbHelper = FirebaseDbHelper.getInstance();
+        mFirebaseDbHelper.setContext(this);
+        mFirebaseDbHelper.setOnSaleDataLoadedListener(new FirebaseDbHelper.OnSaleDataLoadedListener() {
+            @Override
+            public void onSaleDataLoaded(Sale sale) {
+                mFirebaseDbHelper.getSeller(sale, sale.getUid());
+            }
+        });
+        mFirebaseDbHelper.setUserDataLoadedListener(new FirebaseDbHelper.OnUserDataLoadedListener() {
+            @Override
+            public void onUserDataLoaded(User user) {
+                mNetworkHelper.getZipCodeByDistance(user.getZipCode());
+            }
+        });
+        mFirebaseDbHelper.setOnSaleIdLoadedListener(new FirebaseDbHelper.OnSaleIdLoadedListener() {
+            @Override
+            public void onSaleIdLoaded(String sid) {
+                mFirebaseDbHelper.getSale(sid);
+            }
+        });
+        mFirebaseDbHelper.setOnSellerDataLoadedListener(new FirebaseDbHelper.OnSellerDataLoadedListener() {
+            @Override
+            public void onSellerDataLoaded(Sale sale, User seller) {
+                TradeIt.reduceSellersCount();
+                TradeIt.getSaleUserMap().put(sale, seller);
+
+                if (TradeIt.getSellersCount() <= 0) {
+                    startHomeActivity();
+                }
+            }
+        });
+        mNetworkHelper = new NetworkHelper(this);
+        mNetworkHelper.setOnZipCodeResponseListener(new NetworkHelper.OnZipCodeResponseListener() {
+            @Override
+            public void onZipCodeResponse(List<String> response) {
+                mZipCodeNum = response.size();
+                for (String zipCode : response) {
+                    mFirebaseDbHelper.fetchSaleIds(zipCode);
+                }
+            }
+        });
+
+        mZipCodeNum = 0;
     }
 
     @Override
@@ -174,11 +226,6 @@ public class SignInActivity extends AppCompatActivity implements
         startActivity(intent);
     }
 
-    private void startPostActivity() {
-        Intent intent = new Intent(this, PostActivity.class);
-        startActivity(intent);
-    }
-
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
 
@@ -191,15 +238,11 @@ public class SignInActivity extends AppCompatActivity implements
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser currentUser = mAuth.getCurrentUser();
                             TradeIt.setUid(currentUser. getUid());
-//                            DbHelper dbHelper = DbHelper.getInstance();
-//                            dbHelper.fetchInfo();
 
-                            if (DbHelper.snapshot == null) {
+                            if (FirebaseDbHelper.snapshot == null) {
                                 Log.w(TAG, "DataSnapshot is null!");
                             }
                             fetchUserData();
-                            startHomeActivity();
-//                            startPostActivity();
                         } else {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(SignInActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
@@ -210,9 +253,7 @@ public class SignInActivity extends AppCompatActivity implements
     }
 
     private void fetchUserData() {
-        DbHelper helper = DbHelper.getInstance();
-        helper.setContext(this);
-        helper.fetchInfo();
+        mFirebaseDbHelper.fetchUserInfo();
     }
 
     private void updateUI(boolean signedIn) {
@@ -226,4 +267,5 @@ public class SignInActivity extends AppCompatActivity implements
             disconnectButton.setVisibility(View.GONE);
         }
     }
+
 }

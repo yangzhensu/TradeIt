@@ -9,7 +9,7 @@ import android.widget.EditText;
 import steve.yang.tradeit.R;
 import steve.yang.tradeit.TradeIt;
 import steve.yang.tradeit.data.User;
-import steve.yang.tradeit.util.DbHelper;
+import steve.yang.tradeit.util.FirebaseDbHelper;
 
 public class ProfileActivity extends AppCompatActivity
     implements View.OnClickListener{
@@ -99,7 +99,7 @@ public class ProfileActivity extends AppCompatActivity
         currentUser.setZipCode(etZipcode.getText().toString());
         currentUser.setWhatsup(etWhatsup.getText().toString());
 
-        DbHelper helper = DbHelper.getInstance();
+        FirebaseDbHelper helper = FirebaseDbHelper.getInstance();
         helper.updateUser(currentUser);
     }
 

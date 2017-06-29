@@ -21,18 +21,18 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import steve.yang.tradeit.R;
 import steve.yang.tradeit.TradeIt;
 import steve.yang.tradeit.adapter.ImageAdapter;
 import steve.yang.tradeit.data.Sale;
-import steve.yang.tradeit.util.DbHelper;
+import steve.yang.tradeit.util.FirebaseDbHelper;
 
 public class PostActivity extends AppCompatActivity
         implements AdapterView.OnItemClickListener, View.OnClickListener {
@@ -63,7 +63,7 @@ public class PostActivity extends AppCompatActivity
 
     private LayoutInflater mInflater;
     private ImageAdapter mAdapter;
-    private DbHelper dbHelper;
+    private FirebaseDbHelper firebaseDbHelper;
 
     private Sale newSale;
 
@@ -92,7 +92,7 @@ public class PostActivity extends AppCompatActivity
         btnBack.setOnClickListener(this);
         btnConfirm.setOnClickListener(this);
 
-        dbHelper = DbHelper.getInstance();
+        firebaseDbHelper = FirebaseDbHelper.getInstance();
 
         removeMode = false;
         uploadedImageCount = 0;
@@ -188,11 +188,12 @@ public class PostActivity extends AppCompatActivity
     private void postItem() {
         Log.d(TAG, "postItem is executed");
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        DatabaseReference salesRef = dbHelper.mDb.child("sales");
+        DatabaseReference salesRef = firebaseDbHelper.mDb.child("sales");
+        final List<String> imageUrls = newSale.getImageUrls();
         String salesId = salesRef.push().getKey();
         newSale.setSalesId(salesId);
         StorageReference imagesRef = storage.getReference().child("images").child(TradeIt.getUid()).child(salesId);
-        TradeIt.getSales().add(newSale);
+
         for (int i = 0; i < mAdapter.getCount(); i++) {
             Image image = mAdapter.getItem(i);
             Log.d(TAG, "imagePath: " + image.getPath());
@@ -206,6 +207,7 @@ public class PostActivity extends AppCompatActivity
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    imageUrls.add(downloadUrl.toString());
                     // TODO fix potential problem, the first uploaded image might not be the main image
                     if ("".equals(newSale.getMainImageUrl())) {
                         newSale.setMainImageUrl(downloadUrl.toString());
@@ -235,6 +237,6 @@ public class PostActivity extends AppCompatActivity
         newSale.setTags(etTags.getText().toString());
         newSale.setZipCode(etZipcode.getText().toString());
 
-        dbHelper.addSale(newSale);
+        firebaseDbHelper.addSale(newSale);
     }
 }

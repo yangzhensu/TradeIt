@@ -1,24 +1,28 @@
 package steve.yang.tradeit.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import steve.yang.tradeit.R;
-import steve.yang.tradeit.TradeIt;
 import steve.yang.tradeit.data.Sale;
+import steve.yang.tradeit.data.SaleSeller;
+import steve.yang.tradeit.data.User;
+import steve.yang.tradeit.ui.ViewActivity;
 
 /**
  * @author zhensuy
@@ -26,11 +30,16 @@ import steve.yang.tradeit.data.Sale;
  * @description
  */
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerViewAdapter.ViewHolder> {
 
-    public static final String TAG = RecyclerViewAdapter.class.getSimpleName();
+    public static final String TAG = HomeRecyclerViewAdapter.class.getSimpleName();
 
-    private List<Sale> mDataSet;
+    public static final String SALE_SELLER_POSITION = "sale_seller_position";
+
+    private List<Sale> mSaleList;
+    private List<User> mSellerList;
+    private Map<Sale, User> mSaleUserMap;
+    private List<SaleSeller> mSaleSellerList;
     private LayoutInflater mInflater;
     private Context mContext;
 
@@ -95,27 +104,56 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
-    public RecyclerViewAdapter(List<Sale> mDataSet, Context context) {
-        this.mDataSet = mDataSet;
+    public HomeRecyclerViewAdapter() {
+        mSaleList = new ArrayList<>();
+        mSellerList = new ArrayList<>();
+        mSaleSellerList = new ArrayList<>();
+    }
+
+    public HomeRecyclerViewAdapter(Context context) {
+        this();
+        mContext = context;
+    }
+
+    public HomeRecyclerViewAdapter(List<Sale> mSaleList, List<User> mSellerList, Context context) {
+        this.mSaleList = mSaleList;
+        this.mSellerList = mSellerList;
         this.mContext = context;
+    }
+
+    public HomeRecyclerViewAdapter(Map<Sale, User> saleUserMap, Context context) {
+        this(context);
+        mSaleUserMap = saleUserMap;
+        mapToList();
+    }
+
+    private void mapToList() {
+        int i = 0;
+        for (Map.Entry<Sale, User> entry : mSaleUserMap.entrySet()) {
+            Log.d(TAG, "mapToList, position: " + i);
+            mSaleSellerList.add(new SaleSeller(entry.getKey(), entry.getValue(), i++));
+        }
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.d(TAG, "onCreateViewHolder, viewType: " + viewType);
         mInflater = LayoutInflater.from(parent.getContext());
         LinearLayout cardView = (LinearLayout) mInflater.inflate(R.layout.sale_card, parent, false);
         ViewHolder vh = new ViewHolder(cardView);
-
         return vh;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder, position: " + position);
-        Sale sale = mDataSet.get(position);
+        SaleSeller saleSeller = mSaleSellerList.get(position);
+
+        Sale sale = saleSeller.getSale();
+        User seller = saleSeller.getSeller();
 
         holder.tvTitle.setText(sale.getTitle());
-        holder.tvSellerName.setText(TradeIt.getUser().getUserName());
+        holder.tvSellerName.setText(seller.getUserName());
         holder.tvPrice.setText(sale.getPrice());
         holder.tvDescription.setText(sale.getDetails());
         holder.tvTag.setText(sale.getTags());
@@ -128,6 +166,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        return mDataSet.size();
+        return mSaleSellerList.size();
     }
+
 }
